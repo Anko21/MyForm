@@ -3,13 +3,8 @@ import { useState } from "react";
 import './Form.css'
 
 const Form = (props) => {
-    const [isFocused, setIsFocused] = useState(false); 
 
     const handleChange = (e) => {
-        console.log('e.target.name')
-        console.log(e.target.name)
-        console.log(e.target.value)
-        console.log(e.target.value)
         props.setUser({...props.user, [e.target.name] : e.target.value});
     };
 
@@ -17,13 +12,12 @@ const Form = (props) => {
         props.setUser({...props.user, [e.target.name] : e.target.checked});
     };
 
-  
     const handleOnFocus = () => { 
-        setIsFocused(true); 
+        props.setIsFocused(true); 
     }; 
-  
+
     const handleBlur = (e) => { 
-        setIsFocused(false);
+        props.setIsFocused(false);
         const errors = handleErrors(props.user.password, props.user.phone, props.user.email)
         props.setUserErrors(()=>errors)
     }; 
@@ -39,6 +33,8 @@ const Form = (props) => {
 
     const handleSubmit = (event) => {
         event.preventDefault();
+        const errors = handleErrors(props.user.password, props.user.phone, props.user.email)
+        props.setUserErrors(()=>errors)
         if (Object.keys(props.userErrors).length === 0){
             fetch("http://url.com/endpoint", {
                 method: "POST",
@@ -87,7 +83,7 @@ const Form = (props) => {
                         onBlur={handleBlur}
                     />
                 </label>
-                {props.userErrors.pwd_errors && props.userErrors.pwd_errors.length > 0 && !isFocused && (
+                {props.userErrors.pwd_errors && props.userErrors.pwd_errors.length > 0 && !props.isFocused && (
                     <div>
                         {props.userErrors.pwd_errors.map((error, index) => (
                             <p key={index}>{error}</p>
@@ -109,7 +105,7 @@ const Form = (props) => {
                     />
                 </label>
                 <div>
-                    {props.userErrors.phone_errors && props.userErrors.phone_errors.length && !isFocused > 0 && (
+                    {props.userErrors.phone_errors && props.userErrors.phone_errors.length && !props.isFocused > 0 && (
                         <p>{props.userErrors.phone_errors}</p>
                     )}
                 </div><br/>
@@ -126,7 +122,7 @@ const Form = (props) => {
                         onBlur={handleBlur}
                     />
                 </label>
-                {props.userErrors.email_errors && props.userErrors.email_errors.length > 0 && !isFocused && (
+                {props.userErrors.email_errors && props.userErrors.email_errors.length > 0 && !props.isFocused && (
                     <div>
                         {props.userErrors.email_errors.map((error, index) => (
                             <p key={index}>{error}</p>
@@ -218,6 +214,5 @@ const Form = (props) => {
         </>       
     )
 }
-
 
 export default Form

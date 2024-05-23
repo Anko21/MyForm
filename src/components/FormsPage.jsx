@@ -16,6 +16,8 @@ const FormsPage = () => {
         })
     const [userErrors, setUserErrors] = useState({})
 
+    const [isFocused, setIsFocused] = useState(false); 
+
     
     return(
         <div className="container">
@@ -24,6 +26,8 @@ const FormsPage = () => {
                 setUser={setUser}
                 userErrors = {userErrors}
                 setUserErrors = {setUserErrors}
+                isFocused = {isFocused}
+                setIsFocused = {setIsFocused}
             />
         </div>
     )
