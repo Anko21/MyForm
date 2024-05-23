@@ -1,9 +1,15 @@
 import handleErrors from "./HandleErrors";
+import { useState } from "react";
 import './Form.css'
 
 const Form = (props) => {
+    const [isFocused, setIsFocused] = useState(false); 
 
     const handleChange = (e) => {
+        console.log('e.target.name')
+        console.log(e.target.name)
+        console.log(e.target.value)
+        console.log(e.target.value)
         props.setUser({...props.user, [e.target.name] : e.target.value});
     };
 
@@ -11,6 +17,16 @@ const Form = (props) => {
         props.setUser({...props.user, [e.target.name] : e.target.checked});
     };
 
+  
+    const handleOnFocus = () => { 
+        setIsFocused(true); 
+    }; 
+  
+    const handleBlur = (e) => { 
+        setIsFocused(false);
+        const errors = handleErrors(props.user.password, props.user.phone, props.user.email)
+        props.setUserErrors(()=>errors)
+    }; 
     // //OR both functions in one:)
 
     // const handleAllChange = (e) => {
@@ -21,23 +37,28 @@ const Form = (props) => {
     // });
     // };
 
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        const errors = handleErrors(props.user.password, props.user.phone, props.user.email)
-        props.setUserErrors(()=>errors)
-
-        if (Object.keys(errors).length === 0){
+        if (Object.keys(props.userErrors).length === 0){
             fetch("http://url.com/endpoint", {
                 method: "POST",
                 body: JSON.stringify({ user: props.user }),
                 })
-            props.setUser([])
+            props.setUser({
+                username:"",
+                password:"",
+                phone:"",
+                email:"",
+                textarea:"",
+                checkbox: false,
+                radiobtn: "",
+                favColor:""
+            })
         } else {
             return props.userErrors 
         }
     };
-    
+
     return (
         <>
             <form onSubmit={handleSubmit}>
@@ -56,21 +77,23 @@ const Form = (props) => {
                 
                 <label htmlFor="password">
                     Enter your password:
-                    <input 
-                        id="password" 
-                        type="password" 
+                    <input
+                        id="password"
+                        type="password"
                         name="password"
-                        value = {props.user.password}
-                        onChange = {handleChange}
-                        />
+                        value={props.user.password}
+                        onChange={handleChange}
+                        onFocus={handleOnFocus}
+                        onBlur={handleBlur}
+                    />
                 </label>
-                {props.userErrors.pwd_errors && props.userErrors.pwd_errors.length > 0 && (
+                {props.userErrors.pwd_errors && props.userErrors.pwd_errors.length > 0 && !isFocused && (
                     <div>
                         {props.userErrors.pwd_errors.map((error, index) => (
                             <p key={index}>{error}</p>
                         ))}
                     </div>
-                )}<br/>
+                )}<br />
                 
                 <label htmlFor="tel">
                     Enter your phone number
@@ -81,10 +104,12 @@ const Form = (props) => {
                         pattern="(\+44\s?7\d{3}|\(?07\d{3}\)?)\s?\d{3}\s?\d{3}"  //"[0-9]{3}-[0-9]{2}-[0-9]{3}""
                         value = {props.user.phone}
                         onChange = {handleChange}
+                        onFocus={handleOnFocus}
+                        onBlur={handleBlur}
                     />
                 </label>
                 <div>
-                    {props.userErrors.phone_errors && props.userErrors.phone_errors.length > 0 && (
+                    {props.userErrors.phone_errors && props.userErrors.phone_errors.length && !isFocused > 0 && (
                         <p>{props.userErrors.phone_errors}</p>
                     )}
                 </div><br/>
@@ -97,9 +122,11 @@ const Form = (props) => {
                         name = "email"
                         value = {props.user.email}
                         onChange = {handleChange}
+                        onFocus={handleOnFocus}
+                        onBlur={handleBlur}
                     />
                 </label>
-                {props.userErrors.email_errors && props.userErrors.email_errors.length > 0 && (
+                {props.userErrors.email_errors && props.userErrors.email_errors.length > 0 && !isFocused && (
                     <div>
                         {props.userErrors.email_errors.map((error, index) => (
                             <p key={index}>{error}</p>
@@ -186,8 +213,7 @@ const Form = (props) => {
                 </select>
                 </label>
 
-                <input type="submit" value = "Create an account"/>
-                {/* <button>Submit</button> since the btn is inside a from it sets the type='submit' by default */}
+                <input type="submit" value = "Create an account" />
             </form>    
         </>       
     )
