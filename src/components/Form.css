@@ -1,0 +1,88 @@
+/* Form Container */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw; /* Full viewport width */
+    background-color: #f0f0f0;
+    padding: 1em 0;
+}
+
+form {
+    max-width: 600px;
+    margin: 0 auto;
+    padding: 1em;
+    background: #693499;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+}
+
+/* Form Title */
+h1 {
+    text-align: center;
+    color: #fff;
+}
+
+/* Form Labels */
+label {
+    display: block;
+    color: #fff;
+    font-size: 1.2rem;
+    font-weight: bolder;
+    text-align: center;
+}
+
+/* Form Inputs */
+input[type="text"],
+input[type="password"],
+input[type="email"],
+input[type="tel"],
+textarea,
+select {
+    width: 70%;
+    padding: 0.5em;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+}
+
+/* Form Submit Button */
+input[type="submit"] {
+    background: #333;
+    color: white;
+    border: none;
+    padding: 0.75em;
+    margin-top: 1em;
+    border-radius: 4px;
+    cursor: pointer;
+    width: 100%;
+}
+
+input[type="submit"]:hover {
+    background: #555;
+}
+
+/* Error Messages */
+p {
+    color: black;
+    margin: 0em;
+}
+
+/* Checkbox and Radio Buttons */
+input[type="checkbox"],
+input[type="radio"] {
+    margin-right: 0.5em;
+}
+
+/* Fieldset and Legend */
+fieldset {
+    border: 1px solid #ccc;
+    border-radius: 4px;
+}
+
+legend {
+    padding-left: 1em;
+    color: #fff;
+    font-size: 1.2rem;
+}
